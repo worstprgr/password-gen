@@ -1,0 +1,9 @@
+# Pycharm & venv
+/.idea
+/venv
+/__pycache__
+
+# Keys
+*.private*
+*.key*
+*cred*
