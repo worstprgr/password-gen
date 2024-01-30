@@ -6,6 +6,7 @@ Generates a password with high entropy and copies the result to clipboard.
 usage: pass.py [-h] [-n] length
 
 positional arguments:
+  seed        Provide random characters, to generate a seed for the randomizer.
   length      How long the password should be
 
 options:
