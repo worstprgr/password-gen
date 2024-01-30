@@ -84,12 +84,14 @@ class Clipboard:
 class ArgParser:
     def __init__(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('length', type=int, help='How long the password should be')
+        parser.add_argument('seed', type=str, help='Input some random characters, to create a seed for the randomizer.')
+        parser.add_argument('length', type=int, help='How long the password should be.')
         parser.add_argument('-n', '--nocp', action='store_true', help='If provided, this program would not store the '
                                                                       'output in the OS clipboard.')
 
         args = parser.parse_args()
         self.pass_length: int = args.length
+        self.rand_seed: str = args.seed
         self.nocp: bool = args.nocp
 
 
@@ -97,6 +99,7 @@ class PassGen(ArgParser, Clipboard):
     def __init__(self):
         ArgParser.__init__(self)
         Clipboard.__init__(self)
+        random.seed = self.rand_seed
         self.passes: int = 512
         self.letters: str = string.ascii_letters
         self.digits: str = string.digits
