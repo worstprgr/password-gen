@@ -5,7 +5,7 @@ Generates a password and copies the result to clipboard.
 > This tool uses all alphanumeric ASCII characters and this set of special characters: `!#$%&()*+-=?@_`
 >   
 > The reason for the limiting is, that some services having still trouble to escape certain characters \*sigh\*  
-> But you can change it to your needs: `class PassGen` -> Var: `self.other`  
+> But you can change it to your needs: `class PassGen` -> `self.other`  
 
 
 ```commandline
