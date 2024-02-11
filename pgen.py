@@ -19,10 +19,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import string
-import random
+import secrets
 import argparse
 import subprocess
 import platform
+import sys
 
 
 class Clipboard:
@@ -84,14 +85,12 @@ class Clipboard:
 class ArgParser:
     def __init__(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('seed', type=str, help='Input some random characters, to create a seed for the randomizer.')
         parser.add_argument('length', type=int, help='How long the password should be.')
         parser.add_argument('-n', '--nocp', action='store_true', help='If provided, this program would not store the '
                                                                       'output in the OS clipboard.')
 
         args = parser.parse_args()
         self.pass_length: int = args.length
-        self.rand_seed: str = args.seed
         self.nocp: bool = args.nocp
 
 
@@ -99,7 +98,6 @@ class PassGen(ArgParser, Clipboard):
     def __init__(self):
         ArgParser.__init__(self)
         Clipboard.__init__(self)
-        random.seed = self.rand_seed
         self.passes: int = 512
         self.letters: str = string.ascii_letters
         self.digits: str = string.digits
@@ -110,7 +108,11 @@ class PassGen(ArgParser, Clipboard):
         program_name: str = 'Password Generator'
         print('-' * 7, program_name, '-' * 7)
 
-        result = self.rnd_chars(self.prep_chars(), self.pass_length)
+        if self.pass_length <= 0:
+            print('Password length can not be less than zero')
+            sys.exit()
+
+        result = self.rnd_chars(self.pass_length)
 
         if not self.nocp:
             print('Info: Copied to clipboard')
@@ -121,18 +123,11 @@ class PassGen(ArgParser, Clipboard):
         print(result)
         print('-'*(16+len(program_name)))
 
-    def prep_chars(self) -> str:
-        new_random: list[str]
-        chars: list[str] = list(self.chars)
-
-        for x in range(self.passes):
-            random.shuffle(chars)
-
-        return ''.join(chars)
-
-    @staticmethod
-    def rnd_chars(given_chars: str, pw_length: int) -> str:
-        return ''.join(random.choices(given_chars, k=pw_length))
+    def rnd_chars(self, pw_length: int) -> str:
+        secret: str = ''
+        for random_chars in range(0, pw_length):
+            secret += secrets.choice(self.chars)
+        return secret
 
 
 if __name__ == '__main__':
