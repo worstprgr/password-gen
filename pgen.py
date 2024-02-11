@@ -98,7 +98,6 @@ class PassGen(ArgParser, Clipboard):
     def __init__(self):
         ArgParser.__init__(self)
         Clipboard.__init__(self)
-        self.passes: int = 512
         self.letters: str = string.ascii_letters
         self.digits: str = string.digits
         self.other: str = '!#$%&()*+-=?@_'
